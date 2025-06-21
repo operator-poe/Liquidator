@@ -4,6 +4,8 @@ using ExileCore;
 using ExileCore.PoEMemory.Elements;
 using System.Runtime.InteropServices;
 using System;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Liquidator.Stash;
 
@@ -108,5 +110,49 @@ public static class Utils
       return true;
     }
     return false;
+  }
+
+  public static void SetClipBoardText(string text)
+  {
+    var thread = new Thread(() =>
+    {
+      Clipboard.SetText(text);
+    });
+    thread.SetApartmentState(ApartmentState.STA);
+    thread.Start();
+    thread.Join();
+  }
+  public static void ClearClipboard()
+  {
+    var thread = new Thread(() =>
+    {
+      Clipboard.Clear();
+    });
+    thread.SetApartmentState(ApartmentState.STA);
+    thread.Start();
+    thread.Join();
+  }
+
+  public static string GetClipboardText()
+  {
+    string result = string.Empty;
+    Thread staThread = new Thread(() =>
+    {
+      result = Clipboard.GetText();
+    });
+    staThread.SetApartmentState(ApartmentState.STA);
+    staThread.Start();
+    staThread.Join();
+    return result;
+  }
+
+  public static async SyncTask<bool> TypeText(string text)
+  {
+    SetClipBoardText(text);
+    await InputAsync.Wait(() => GetClipboardText() == text, 1000, "Clipboard text not set");
+    await InputAsync.KeyDown(Keys.ControlKey);
+    await InputAsync.KeyPress(Keys.V);
+    await InputAsync.KeyUp(Keys.ControlKey);
+    return true;
   }
 }
