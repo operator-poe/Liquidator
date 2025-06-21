@@ -71,11 +71,22 @@ public class Liquidator : BaseSettingsPlugin<LiquidatorSettings>
             if (Exchange.LeftSideCurrency != null)
             {
                 Graphics.DrawText(Exchange.LeftSideCurrency.BaseName, new Vector2(100, 100), Color.Red);
+                Graphics.DrawText(Exchange.LeftSideValueField.Value.ToString(), new Vector2(100, 120), Color.Red);
             }
 
             if (Exchange.RightSideCurrency != null)
             {
                 Graphics.DrawText(Exchange.RightSideCurrency.BaseName, new Vector2(100, 200), Color.Red);
+                var col = Color.Red;
+                if (Exchange.RightSideValueField.State == ExchangeValueFieldState.Open)
+                {
+                    col = Color.Green;
+                }
+                if (Exchange.RightSideValueField.State == ExchangeValueFieldState.Fixed)
+                {
+                    col = Color.Yellow;
+                }
+                Graphics.DrawText(Exchange.RightSideValueField.Value.ToString(), new Vector2(100, 220), col);
             }
         }
     }
