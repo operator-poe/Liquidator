@@ -7,8 +7,14 @@ namespace Liquidator;
 
 public class Liquidator : BaseSettingsPlugin<LiquidatorSettings>
 {
+    internal static Liquidator Instance;
+
     public override bool Initialise()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         //Perform one-time initialization here
 
         //Maybe load you custom config (only do so if builtin settings are inadequate for the job)

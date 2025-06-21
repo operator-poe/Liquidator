@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run dotnet build",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-dotnet",
+      "program": "enter your program dll path here",
+      "args": []
+    }
+  ]
+}

@@ -21,6 +21,14 @@
       <HintPath>..\..\..\GameOffsets.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="InputHumanizerLib">
+      <HintPath>..\..\..\InputHumanizerLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ItemFilterLibrary">
+      <HintPath>..\..\..\ItemFilterLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

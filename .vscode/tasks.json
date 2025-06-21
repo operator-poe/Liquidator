@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-dotnet",
+      "type": "shell",
+      "command": "dotnet build -o ../../../Plugins/Compiled/Liquidator",
+      "group": "build"
+    }
+  ]
+}
