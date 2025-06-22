@@ -52,8 +52,15 @@ public class Liquidator : BaseSettingsPlugin<LiquidatorSettings>
         return null;
     }
 
+    private LiquidationProcess _liquidationProcess;
+
     private async SyncTask<bool> TestCoroutine()
     {
+        if (_liquidationProcess == null)
+        {
+            _liquidationProcess = new LiquidationProcess();
+        }
+
         await MoveAround.FindAndClickFaustus();
         await InputAsync.Wait();
         await MoveAround.EnsureInventoryIsOpen();
@@ -65,28 +72,14 @@ public class Liquidator : BaseSettingsPlugin<LiquidatorSettings>
     public override void Render()
     {
         Scheduler.Run();
-        if (Exchange.IsVisible)
+        if (_liquidationProcess != null)
         {
-
-            if (Exchange.LeftSideCurrency != null)
+            var y = 100;
+            foreach (var item in _liquidationProcess.ItemsToSell)
             {
-                Graphics.DrawText(Exchange.LeftSideCurrency.BaseName, new Vector2(100, 100), Color.Red);
-                Graphics.DrawText(Exchange.LeftSideValueField.Value.ToString(), new Vector2(100, 120), Color.Red);
-            }
-
-            if (Exchange.RightSideCurrency != null)
-            {
-                Graphics.DrawText(Exchange.RightSideCurrency.BaseName, new Vector2(100, 200), Color.Red);
-                var col = Color.Red;
-                if (Exchange.RightSideValueField.State == ExchangeValueFieldState.Open)
-                {
-                    col = Color.Green;
-                }
-                if (Exchange.RightSideValueField.State == ExchangeValueFieldState.Fixed)
-                {
-                    col = Color.Yellow;
-                }
-                Graphics.DrawText(Exchange.RightSideValueField.Value.ToString(), new Vector2(100, 220), col);
+                Graphics.DrawText(item.Key, new Vector2(100, y), Color.White);
+                Graphics.DrawText(item.Value.ToString(), new Vector2(100, y + 20), Color.White);
+                y += 40;
             }
         }
     }

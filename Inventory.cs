@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements;
@@ -29,5 +30,25 @@ public static class Inventory
     {
       return Panel.IsVisible;
     }
+  }
+
+  public static Dictionary<string, int> GetAvailableItems()
+  {
+    var snapshot = Stash.Inventory.CreateSnapshot();
+    var items = new Dictionary<string, int>();
+    foreach (var item in snapshot.GetAllItems())
+    {
+      var baseItem = item.Item.GetComponent<Base>();
+      var stack = item.Item.GetComponent<Stack>();
+      if (items.ContainsKey(baseItem.Name))
+      {
+        items[baseItem.Name] += stack.Size;
+      }
+      else
+      {
+        items[baseItem.Name] = stack.Size;
+      }
+    }
+    return items;
   }
 }
